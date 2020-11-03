@@ -7,12 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CreateUserComponent } from './components/create-user/create-user.component';
 import { CountCompleteCardsComponent } from './components/count-complete-cards/count-complete-cards.component';
+import { NavbarComponent } from './components/shared/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CreateUserComponent,
-    CountCompleteCardsComponent
+    CountCompleteCardsComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
