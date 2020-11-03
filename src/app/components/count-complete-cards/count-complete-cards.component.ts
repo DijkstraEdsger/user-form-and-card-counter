@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Card } from '../../classes/card';
+import { CardService } from '../../services/card/card.service';
 
 @Component({
   selector: 'app-count-complete-cards',
@@ -8,20 +10,22 @@ import { Component, OnInit } from '@angular/core';
 export class CountCompleteCardsComponent implements OnInit {
   value: any[] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A'];
   suit: any[] = ['diamonds', 'hearts', 'spades', 'clubs'];
-  deck = [];
+  cardCounter = [];
   numberOfCompleteDecks: number;
+  cards: Card[] = [];
 
-  constructor() {
-    this.deck = new Array(4);
-    for (var i = 0; i < this.deck.length; i++) {
-      this.deck[i] = new Array(13);
-      for (let j = 0; j < this.deck[i].length; j++) {
-        this.deck[i][j] = 0;
+  constructor(private cardService: CardService) {
+    this.cardCounter = new Array(4);
+    for (var i = 0; i < this.cardCounter.length; i++) {
+      this.cardCounter[i] = new Array(13);
+      for (let j = 0; j < this.cardCounter[i].length; j++) {
+        this.cardCounter[i][j] = 0;
       }
     }
   }
 
   ngOnInit(): void {
+    this.cards = this.cardService.getAllCards();
     this.countCompleteDecks();
   }
 
@@ -31,42 +35,23 @@ export class CountCompleteCardsComponent implements OnInit {
   }
 
   countAllCards() {
-    this.deckList.forEach((element) => {
+    this.cards.forEach((element) => {
       let i: number = this.suit.findIndex((item) => element.suit === item);
       let j: number = this.value.findIndex((item) => element.value === item);
 
-      this.deck[i][j] += 1;
+      this.cardCounter[i][j] += 1;
     });
   }
 
   getMinNumberOfSameCard(): number {
-    let min: number = this.deck[0][0];
-    for (let i = 0; i < this.deck.length; i++) {
-      for (let j = 0; j < this.deck[i].length; j++) {
-        if (this.deck[i][j] < min) {
-          min = this.deck[i][j];
+    let min: number = this.cardCounter[0][0];
+    for (let i = 0; i < this.cardCounter.length; i++) {
+      for (let j = 0; j < this.cardCounter[i].length; j++) {
+        if (this.cardCounter[i][j] < min) {
+          min = this.cardCounter[i][j];
         }
       }
     }
     return min;
   }
-
-  deckList: any[] = [
-    {
-      suit: 'hearts',
-      value: 2,
-    },
-    {
-      suit: 'clubs',
-      value: 9,
-    },
-    {
-      suit: 'diamonds',
-      value: 'J',
-    },
-    {
-      suit: 'spades',
-      value: 'A',
-    },
-  ];
 }
