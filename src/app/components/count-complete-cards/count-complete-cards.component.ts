@@ -44,13 +44,9 @@ export class CountCompleteCardsComponent implements OnInit {
   }
 
   getMinNumberOfSameCard(): number {
-    let min: number = this.cardCounter[0][0];
+    let min: number;
     for (let i = 0; i < this.cardCounter.length; i++) {
-      for (let j = 0; j < this.cardCounter[i].length; j++) {
-        if (this.cardCounter[i][j] < min) {
-          min = this.cardCounter[i][j];
-        }
-      }
+      min = Math.min(...this.cardCounter[i]);
     }
     return min;
   }
