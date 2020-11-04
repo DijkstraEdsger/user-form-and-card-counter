@@ -17,7 +17,7 @@ export class CreateUserComponent implements OnInit {
       lastName: [''],
       age: [null],
       address: [''],
-      email: ['', [Validators.email]],
+      email: [null, [Validators.email]],
     });
   }
 
