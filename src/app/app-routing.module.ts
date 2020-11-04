@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CreateUserComponent } from './components/create-user/create-user.component';
+import { UserComponent } from './components/user/user.component';
 import { CountCompleteCardsComponent } from './components/count-complete-cards/count-complete-cards.component';
+import { UserDetailComponent } from './components/user-detail/user-detail.component';
 
 const routes: Routes = [
   {
-    path: 'user-form',
-    component: CreateUserComponent,
+    path: 'user',
+    component: UserComponent,
+  },
+  {
+    path: 'user/:id',
+    component: UserDetailComponent,
   },
   {
     path: 'complete-cards',
@@ -14,9 +19,9 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'user-form',
-    pathMatch: 'full'
-  }
+    redirectTo: 'user',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
