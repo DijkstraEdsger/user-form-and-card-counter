@@ -23,7 +23,7 @@ export class UserService {
   getUsersObservable = (observer) => {
     let time = setTimeout(() => {
       observer.next(this.users);
-    }, 1500);
+    }, 1000);
 
     return {
       unsubscribe() {

@@ -3,11 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserComponent } from './components/user/user.component';
 import { CountCompleteCardsComponent } from './components/count-complete-cards/count-complete-cards.component';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { CreateUserComponent } from './components/create-user/create-user.component';
 
 const routes: Routes = [
   {
-    path: 'user',
-    component: UserComponent,
+    path: 'user-list',
+    component: UserListComponent,
+  },
+  {
+    path: 'user-create',
+    component: CreateUserComponent,
   },
   {
     path: 'user/:id',
@@ -19,7 +25,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'user',
+    redirectTo: 'user-create',
     pathMatch: 'full',
   },
 ];

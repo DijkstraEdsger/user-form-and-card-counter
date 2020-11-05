@@ -27,10 +27,6 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  refreshDataUserList() {
-    this.getUsers();
-  }
-
   onShowUserDetail(user: User) {
     this.router.navigate(['user', user.id]);
   }
