@@ -12,6 +12,8 @@ export class UserService {
     new User('Pepe', 'Toledo', 30, null, null, '3'),
   ];
 
+  user: User;
+
   constructor() {}
 
   getUsers(): Observable<any> {
@@ -30,8 +32,21 @@ export class UserService {
     };
   };
 
-  createUser(newUserData: User) {
-    this.users.push(newUserData);
+  createUserObservable = (observer) => {
+    let time = setTimeout(() => {
+      this.user.id = (Math.floor(Math.random() * 10) + 1000).toString();
+      this.users.push(this.user);
+      observer.next(this.users);
+    }, 1500);
+
+    return {
+      unsubscribe() {},
+    };
+  };
+
+  createUser(newUserData: User): Observable<any> {
+    this.user = newUserData;
+    return new Observable(this.createUserObservable);
   }
 
   getUser(id: string) {

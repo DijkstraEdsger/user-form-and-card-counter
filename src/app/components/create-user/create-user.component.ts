@@ -25,7 +25,9 @@ export class CreateUserComponent implements OnInit {
 
   onCreate() {
     let userData: User = this.form.value;
-    this.userService.createUser(userData);
+    this.userService.createUser(userData).subscribe((data) => {
+      console.log('user created', data);
+    });
     this.form.reset();
   }
 }
