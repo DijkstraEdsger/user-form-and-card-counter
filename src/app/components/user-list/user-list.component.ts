@@ -10,12 +10,21 @@ import { Router } from '@angular/router';
 })
 export class UserListComponent implements OnInit {
   users: User[] = [];
+  isLoading: boolean = true;
 
   constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
-    this.users = this.userService.getUsers();
-    console.log('users', this.users);
+    this.getUsers();
+  }
+
+  getUsers() {
+    this.isLoading = true;
+    this.userService.getUsers().subscribe((data) => {
+      this.isLoading = false;
+      this.users = data;
+      console.log('users', this.users);
+    });
   }
 
   onShowUserDetail(user: User) {

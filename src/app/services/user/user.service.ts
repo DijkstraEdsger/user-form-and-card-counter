@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../classes/user';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +14,21 @@ export class UserService {
 
   constructor() {}
 
-  getUsers() {
-    return this.users;
+  getUsers(): Observable<any> {
+    return new Observable(this.getUsersObservable);
   }
+
+  getUsersObservable = (observer) => {
+    let time = setTimeout(() => {
+      observer.next(this.users);
+    }, 1500);
+
+    return {
+      unsubscribe() {
+        clearTimeout(time);
+      },
+    };
+  };
 
   createUser(newUserData: User) {
     this.users.push(newUserData);
