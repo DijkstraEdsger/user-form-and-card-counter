@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user/user.service';
 import { User } from '../../classes/user';
+declare var $: any;
 
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.css'],
 })
-export class CreateUserComponent implements OnInit {
+export class CreateUserComponent implements OnInit, AfterViewInit {
   form: FormGroup;
+  toastMessageHead: string;
+  toastMessageBody: string;
+  toastOptions: any = {
+    delay: 5000,
+  };
 
   constructor(private fb: FormBuilder, private userService: UserService) {}
 
@@ -23,10 +29,21 @@ export class CreateUserComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit() {
+    $('.toast').toast(this.toastOptions);
+  }
+
+  showToast() {
+    $('.toast').toast('show');
+  }
+
   onCreate() {
     let userData: User = this.form.value;
     this.userService.createUser(userData).subscribe((data) => {
       console.log('user created', data);
+      this.toastMessageHead = 'SUCCESS';
+      this.toastMessageBody = 'User created';
+      this.showToast();
     });
     this.form.reset();
   }
