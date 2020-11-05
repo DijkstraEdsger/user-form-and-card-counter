@@ -7,8 +7,8 @@ export class User {
   address?: string;
 
   constructor(
-    name: string,
-    lastName: string,
+    name?: string,
+    lastName?: string,
     age?: number,
     email?: string,
     address?: string,

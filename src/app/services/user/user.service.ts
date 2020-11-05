@@ -13,6 +13,7 @@ export class UserService {
   ];
 
   user: User;
+  id: string;
 
   constructor() {}
 
@@ -50,6 +51,18 @@ export class UserService {
   }
 
   getUser(id: string) {
-    return this.users.find((item) => item.id === id);
+    this.id = id;
+    return new Observable(this.getUserObservable);
   }
+
+  getUserObservable = (observer) => {
+    let time = setTimeout(() => {
+      let fetchedUser: User = this.users.find((item) => item.id === this.id);
+      observer.next(fetchedUser);
+    }, 1500);
+
+    return {
+      unsubscribe() {},
+    };
+  };
 }

@@ -1,16 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserDetailComponent } from './user-detail.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRouteStub, ActivatedRoute } from '../../../testing/activated-route-stub';
+
+////// Testing Vars //////
+let activatedRoute: ActivatedRouteStub;
 
 describe('UserDetailComponent', () => {
   let component: UserDetailComponent;
   let fixture: ComponentFixture<UserDetailComponent>;
 
   beforeEach(async(() => {
+    activatedRoute = new ActivatedRouteStub();
     TestBed.configureTestingModule({
       declarations: [UserDetailComponent],
-      providers: [{ provide: ActivatedRoute }],
+      providers: [
+        {provide: ActivatedRoute, useValue: activatedRoute},
+      ]
     }).compileComponents();
   }));
 
@@ -19,6 +25,8 @@ describe('UserDetailComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+
+  beforeEach(() => activatedRoute.setParamMap({ id: 99999 }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
