@@ -11,8 +11,11 @@ import { User } from '../../classes/user';
 export class UserDetailComponent implements OnInit {
   user: User;
   isLoading: boolean;
+  showErrorMessage: boolean;
+  errorMessage: string;
   constructor(private route: ActivatedRoute, private userService: UserService) {
     this.isLoading = true;
+    this.showErrorMessage = false;
   }
 
   ngOnInit(): void {
@@ -22,10 +25,19 @@ export class UserDetailComponent implements OnInit {
   getUser() {
     this.isLoading = true;
     this.route.paramMap.subscribe((pmap) => {
-      this.userService.getUser(pmap.get('id')).subscribe((data: any) => {
-        this.isLoading = false;
-        this.user = data;
-      });
+      this.userService.getUser(pmap.get('id')).subscribe(
+        (data: any) => {
+          this.isLoading = false;
+          this.showErrorMessage = false;
+          this.user = data;
+        },
+        (error) => {
+          this.showErrorMessage = true;
+          this.isLoading = false;
+          this.errorMessage = error.message;
+          console.log('error', error);
+        }
+      );
     });
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../classes/user';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -58,7 +58,11 @@ export class UserService {
   getUserObservable = (observer) => {
     let time = setTimeout(() => {
       let fetchedUser: User = this.users.find((item) => item.id === this.id);
-      observer.next(fetchedUser);
+      if (fetchedUser !== undefined) {
+        observer.next(fetchedUser);
+      } else {
+        observer.error({ message: 'User not found' });
+      }
     }, 1500);
 
     return {
