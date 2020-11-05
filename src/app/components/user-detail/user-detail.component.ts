@@ -12,7 +12,6 @@ export class UserDetailComponent implements OnInit {
   user: User;
   isLoading: boolean;
   constructor(private route: ActivatedRoute, private userService: UserService) {
-    this.user = new User();
     this.isLoading = true;
   }
 

@@ -1,8 +1,8 @@
-<div *ngIf="user" class="container" style="margin-top: 30px">
+<div class="container" style="margin-top: 30px">
   <div *ngIf="isLoading" class="loader"></div>
-  <div *ngIf="!isLoading">
+  <div *ngIf="user && !isLoading">
     <label>Name:</label>
-    <p>{{ user.name }}</p>
+    <p id="userDetailName">{{ user.name }}</p>
     <hr />
     <label>Last Name:</label>
     <p>{{ user.lastName }}</p>
