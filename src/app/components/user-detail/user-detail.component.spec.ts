@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserDetailComponent } from './user-detail.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('UserDetailComponent', () => {
   let component: UserDetailComponent;
@@ -8,9 +9,9 @@ describe('UserDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserDetailComponent ]
-    })
-    .compileComponents();
+      declarations: [UserDetailComponent],
+      providers: [{ provide: ActivatedRoute }],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
