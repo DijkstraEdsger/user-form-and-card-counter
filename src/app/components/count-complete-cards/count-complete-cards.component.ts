@@ -26,7 +26,10 @@ export class CountCompleteCardsComponent implements OnInit {
 
   ngOnInit(): void {
     this.cards = this.cardService.getAllCards();
+    // this.cards = this.generate2CompleteCardDecks();
     this.countCompleteDecks();
+
+    // console.log('cards generated', this.generate2CompleteCardDecks());
   }
 
   countCompleteDecks() {
@@ -44,10 +47,28 @@ export class CountCompleteCardsComponent implements OnInit {
   }
 
   getMinNumberOfSameCard(): number {
-    let min: number;
+    let min: number = this.cardCounter[0][0];
+    let minRow: number;
     for (let i = 0; i < this.cardCounter.length; i++) {
-      min = Math.min(...this.cardCounter[i]);
+      minRow = Math.min(...this.cardCounter[i]);
+      if (minRow < min) {
+        min = minRow;
+      }
     }
     return min;
+  }
+
+  generate2CompleteCardDecks() {
+    let value: any[] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A'];
+    let suit: any[] = ['diamonds', 'hearts', 'spades', 'clubs'];
+    let cards: Card[] = [];
+    let card: Card;
+    for (let i = 0; i < suit.length; i++) {
+      for (let j = 0; j < value.length; j++) {
+        card = new Card(suit[i], value[j]);
+        cards.push(card);
+      }
+    }
+    return cards;
   }
 }
