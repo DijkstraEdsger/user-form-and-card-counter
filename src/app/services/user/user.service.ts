@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../classes/user';
 import { Observable, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,10 +18,14 @@ export class UserService {
   user: User;
   id: string;
 
-  constructor() {}
+  apiUrl: string = environment.apiUrl + 'admin/user';
+
+  constructor(private http: HttpClient) {}
 
   getUsers(): Observable<any> {
-    return new Observable(this.getUsersObservable);
+    let headers: HttpHeaders = new HttpHeaders();
+    return this.http.get<any>(this.apiUrl, { headers: headers });
+    // return new Observable(this.getUsersObservable);
   }
 
   getUsersObservable = (observer) => {
