@@ -78,7 +78,10 @@
       aria-atomic="true"
       style="position: absolute; top: 0; right: 0"
     >
-      <div class="toast-header">
+      <div
+        class="toast-header"
+        [ngClass]="{ 'toast-header-success': !isError, 'toast-header-error': isError }"
+      >
         <strong class="mr-auto">{{ toastMessageHead }}</strong>
         <button
           type="button"

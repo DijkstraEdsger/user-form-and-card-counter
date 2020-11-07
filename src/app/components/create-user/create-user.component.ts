@@ -16,6 +16,7 @@ export class CreateUserComponent implements OnInit, AfterViewInit {
   toastOptions: any = {
     delay: 5000,
   };
+  isError: boolean = false;
 
   constructor(private fb: FormBuilder, private userService: UserService) {}
 
@@ -39,12 +40,21 @@ export class CreateUserComponent implements OnInit, AfterViewInit {
 
   onCreate() {
     let userData: User = this.form.value;
-    this.userService.createUser(userData).subscribe((data) => {
-      console.log('user created', data);
-      this.toastMessageHead = 'SUCCESS';
-      this.toastMessageBody = 'User created';
-      this.showToast();
-    });
+    this.userService.createUser(userData).subscribe(
+      (data) => {
+        console.log('user created', data);
+        this.isError = false;
+        this.toastMessageHead = 'SUCCESS';
+        this.toastMessageBody = 'User created';
+        this.showToast();
+      },
+      (error) => {
+        this.isError = true;
+        this.toastMessageHead = 'ERROR';
+        this.toastMessageBody = 'Error during creating user';
+        this.showToast();
+      }
+    );
     this.form.reset();
   }
 }
