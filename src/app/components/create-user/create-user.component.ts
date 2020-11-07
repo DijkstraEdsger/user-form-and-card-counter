@@ -22,7 +22,7 @@ export class CreateUserComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      name: [''],
+      name: ['', [Validators.required, Validators.minLength(3)]],
       lastName: [''],
       age: [null],
       address: [''],

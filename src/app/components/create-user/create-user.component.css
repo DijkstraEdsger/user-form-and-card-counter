@@ -7,3 +7,55 @@
   background-color: #f8d7da;
   color: #721c24;
 }
+
+.invalid-input {
+  color: red;
+}
+
+.ng-valid {
+  border-color: green;
+}
+
+.ng-valid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(5, 226, 79, 0.25);
+  animation-name: animation-input-valid;
+  animation-duration: 1s;
+  animation-direction: reverse;
+  animation-iteration-count: infinite;
+}
+
+.ng-invalid {
+  border-color: red;
+}
+
+.ng-invalid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(226, 31, 5, 0.25);
+  animation-name: animation-input-invalid;
+  animation-duration: 1s;
+  animation-direction: reverse;
+  animation-iteration-count: infinite;
+}
+
+@keyframes animation-input-invalid {
+  0% {
+    box-shadow: 0 0 0 0.2rem rgba(226, 31, 5, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 0.2rem rgba(165, 119, 113, 0.25);
+  }
+  100% {
+    box-shadow: 0 0 0 0.2rem rgba(226, 31, 5, 0.25);
+  }
+}
+
+@keyframes animation-input-valid {
+  0% {
+    box-shadow: 0 0 0 0.2rem rgba(5, 226, 79, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 0.2rem rgba(186, 231, 201, 0.25);
+  }
+  100% {
+    box-shadow: 0 0 0 0.2rem rgba(5, 226, 79, 0.25);
+  }
+}
