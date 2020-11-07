@@ -29,7 +29,7 @@ export class UserDetailComponent implements OnInit {
         (data: any) => {
           this.isLoading = false;
           this.showErrorMessage = false;
-          this.user = data;
+          this.user = data.data;
         },
         (error) => {
           this.showErrorMessage = true;

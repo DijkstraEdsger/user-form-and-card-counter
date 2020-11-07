@@ -28,17 +28,17 @@ export class UserService {
     // return new Observable(this.getUsersObservable);
   }
 
-  getUsersObservable = (observer) => {
-    let time = setTimeout(() => {
-      observer.next(this.users);
-    }, 1000);
+  // getUsersObservable = (observer) => {
+  //   let time = setTimeout(() => {
+  //     observer.next(this.users);
+  //   }, 1000);
 
-    return {
-      unsubscribe() {
-        clearTimeout(time);
-      },
-    };
-  };
+  //   return {
+  //     unsubscribe() {
+  //       clearTimeout(time);
+  //     },
+  //   };
+  // };
 
   createUserObservable = (observer) => {
     let time = setTimeout(() => {
@@ -58,22 +58,23 @@ export class UserService {
   }
 
   getUser(id: string) {
-    this.id = id;
-    return new Observable(this.getUserObservable);
+    // this.id = id;
+    // return new Observable(this.getUserObservable);
+    return this.http.get<any>(this.apiUrl + '/' + id);
   }
 
-  getUserObservable = (observer) => {
-    let time = setTimeout(() => {
-      let fetchedUser: User = this.users.find((item) => item.id === this.id);
-      if (fetchedUser !== undefined) {
-        observer.next(fetchedUser);
-      } else {
-        observer.error({ message: 'User not found' });
-      }
-    }, 1500);
+  // getUserObservable = (observer) => {
+  //   let time = setTimeout(() => {
+  //     let fetchedUser: User = this.users.find((item) => item.id === this.id);
+  //     if (fetchedUser !== undefined) {
+  //       observer.next(fetchedUser);
+  //     } else {
+  //       observer.error({ message: 'User not found' });
+  //     }
+  //   }, 1500);
 
-    return {
-      unsubscribe() {},
-    };
-  };
+  //   return {
+  //     unsubscribe() {},
+  //   };
+  // };
 }
