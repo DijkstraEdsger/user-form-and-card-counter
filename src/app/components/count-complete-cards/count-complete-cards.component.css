@@ -1,8 +1,14 @@
 .card {
   margin-left: auto;
   margin-right: auto;
+
+  cursor: pointer;
 }
 
 .card-title {
   text-align: center;
+}
+
+.card-list-button {
+  cursor: pointer;
 }

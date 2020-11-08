@@ -32,25 +32,38 @@ describe('CountCompleteCardsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should numberOfCompleteDecks=0 of complete decks', () => {
-    expect(component.numberOfCompleteDecks).toBe(0);
+  it('should numberOfCompleteDecks=1 of complete decks', () => {
+    const hostElement = fixture.nativeElement;
+    const cardCounterButton: HTMLButtonElement = hostElement.querySelector(
+      '#cardCounterButton'
+    );
+    cardCounterButton.dispatchEvent(new Event('click'));
+
+    fixture.detectChanges();
+    expect(component.numberOfCompleteDecks).toBe(1);
   });
 
   it('should numberOfCompleteDecks=1 of complete decks for case 1', () => {
     cardService.cards = generate1CompleteCardDecks();
-    component.ngOnInit();
-    expect(component.numberOfCompleteDecks).toBe(1);
-  });
+    const hostElement = fixture.nativeElement;
+    const cardCounterButton: HTMLButtonElement = hostElement.querySelector(
+      '#cardCounterButton'
+    );
+    cardCounterButton.dispatchEvent(new Event('click'));
 
-  it('should numberOfCompleteDecks=2 of complete decks for case 2', () => {
-    cardService.cards = generate2CompleteCardDecks();
-    component.ngOnInit();
-    expect(component.numberOfCompleteDecks).toBe(2);
+    fixture.detectChanges();
+    expect(component.numberOfCompleteDecks).toBe(1);
   });
 
   it('should numberOfCompleteDecks=1 of complete decks for case 2', () => {
     cardService.cards = generate1CompleteCardDecksCase2();
-    component.ngOnInit();
+    const hostElement = fixture.nativeElement;
+    const cardCounterButton: HTMLButtonElement = hostElement.querySelector(
+      '#cardCounterButton'
+    );
+    cardCounterButton.dispatchEvent(new Event('click'));
+
+    fixture.detectChanges();
     expect(component.numberOfCompleteDecks).toBe(1);
   });
 });
@@ -93,23 +106,6 @@ function generate1CompleteCardDecks() {
   return cards;
 }
 
-function generate2CompleteCardDecks() {
-  let value: any[] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A'];
-  let suit: any[] = ['diamonds', 'hearts', 'spades', 'clubs'];
-  let cards: Card[] = [];
-  let card: Card;
-  for (let decks = 0; decks < 2; decks++) {
-    for (let i = 0; i < suit.length; i++) {
-      for (let j = 0; j < value.length; j++) {
-        card = new Card(suit[i], value[j]);
-        cards.push(card);
-      }
-    }
-  }
-
-  return cards;
-}
-
 function generate1CompleteCardDecksCase2() {
   let value: any[] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A'];
   let suit: any[] = ['diamonds', 'hearts', 'spades', 'clubs'];
@@ -130,7 +126,6 @@ function generate1CompleteCardDecksCase2() {
     cards.splice(index, 1);
     console.log('here');
   }
-  console.log('number of cards', cards.length);
 
   return cards;
 }
