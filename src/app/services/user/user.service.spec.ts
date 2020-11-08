@@ -10,11 +10,19 @@ describe('UserService', () => {
   let httpClientSpy: { get: jasmine.Spy };
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        UserService,
+        { provide: HttpClient, useValue: httpClientSpy },
+      ],
+    });
+    userService = TestBed.inject(UserService);
+    httpClientSpy = TestBed.inject(HttpClient) as jasmine.SpyObj<HttpClient>;
+  });
+
+  beforeEach(() => {
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
     userService = new UserService(httpClientSpy as any);
-
-    TestBed.configureTestingModule({});
-    userService = TestBed.inject(UserService);
   });
 
   it('should be created', () => {
@@ -41,7 +49,7 @@ describe('UserService', () => {
       .getUsers()
       .subscribe(
         (response) =>
-          expect(response.data).toEqual(expectedUsers, 'expected users'),
+          expect(response).toEqual(expectedUsers, 'expected users'),
         fail
       );
     expect(httpClientSpy.get.calls.count()).toBe(1, 'one call');
