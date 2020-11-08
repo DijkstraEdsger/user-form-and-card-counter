@@ -16,10 +16,11 @@ import { UserService } from '../../services/user/user.service';
 
 ////// Testing Vars //////
 let activatedRoute: ActivatedRouteStub;
+let component: UserDetailComponent;
+let fixture: ComponentFixture<UserDetailComponent>;
 
 describe('UserDetailComponent', () => {
-  let component: UserDetailComponent;
-  let fixture: ComponentFixture<UserDetailComponent>;
+  let usSpy: UserServiceSpy;
 
   beforeEach(async(() => {
     activatedRoute = new ActivatedRouteStub();
@@ -27,16 +28,15 @@ describe('UserDetailComponent', () => {
       declarations: [UserDetailComponent],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
-        UserService,
+        { provide: UserService, useClass: UserServiceSpy },
       ],
     }).compileComponents();
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(UserDetailComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  beforeEach(async(() => {
+    createComponent();
+    usSpy = fixture.debugElement.injector.get(UserService) as any;
+  }));
 
   // beforeEach(() => activatedRoute.setParamMap({ id: 99999 }));
 
@@ -58,38 +58,6 @@ describe('UserDetailComponent', () => {
     let nameEl = fixture.nativeElement.querySelector('#userDetailName');
     expect(nameEl.textContent).toEqual(component.user.name);
   });
-
-  // it('should show user name', async(() => {
-  //   let user: User = new User('Marta', 'Lopez', 31, null, null, '1');
-
-  //   // Create a fake UserService object with a `getUser()` spy
-  //   const userService = jasmine.createSpyObj('UserService', ['getUser']);
-  //   // Simulate delayed observable values with the `asyncData()` helper
-  //   let getUserSpy = userService.getUser.and.returnValue(asyncData(user));
-
-  //   fixture.detectChanges(); // ngOnInit()
-
-  //   fixture.whenStable().then(() => {
-  //     component.isLoading = false;
-  //     // wait for async getUser
-  //     fixture.detectChanges(); // update view
-  //     let nameEl = fixture.nativeElement.querySelector('#userDetailName');
-  //     expect(nameEl.textContent).toBe('kjhg');
-  //   });
-  // }));
-
-  it('should fetch data successfully if called asynchronously', async(() => {
-    let fixture = TestBed.createComponent(UserDetailComponent);
-    let app = fixture.componentInstance;
-    let userService = fixture.debugElement.injector.get(UserService);
-    let spy = spyOn(userService, 'getUser').and.returnValue(
-      asyncData({ name: 'Pepe', lastName: 'Lopez' })
-    );
-    fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      expect(app.user.name).toBe('Pepe');
-    });
-  }));
 });
 
 /**
@@ -98,4 +66,24 @@ describe('UserDetailComponent', () => {
  */
 export function asyncData<T>(data: T) {
   return defer(() => Promise.resolve(data));
+}
+
+class UserServiceSpy {
+  testUser: User = { id: '1', name: 'Luna', lastName: 'Brillante' };
+
+  getUser = jasmine
+    .createSpy('getUser')
+    .and.callFake(() => asyncData(Object.assign({}, { data: this.testUser })));
+}
+
+function createComponent() {
+  fixture = TestBed.createComponent(UserDetailComponent);
+  component = fixture.componentInstance;
+
+  // 1st change detection triggers ngOnInit which gets user
+  fixture.detectChanges();
+  return fixture.whenStable().then(() => {
+    // 2nd change detection
+    fixture.detectChanges();
+  });
 }

@@ -4,12 +4,12 @@
       <h4>Users</h4>
       <div class="list-group">
         <button
-          *ngFor="let user of users"
+          *ngFor="let user of users; let i = index"
           type="button"
           class="list-group-item list-group-item-action"
           (click)="onShowUserDetail(user)"
         >
-          {{ user.name + " " + user.lastName }}
+          {{ i + 1 + " - " + user.name + " " + user.lastName }}
         </button>
       </div>
     </div>

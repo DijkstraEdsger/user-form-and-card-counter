@@ -2,23 +2,29 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateUserComponent } from './create-user.component';
 import { FormBuilder } from '@angular/forms';
+import { UserService } from '../../services/user/user.service';
+import { User } from '../../classes/user';
+import { defer } from 'rxjs';
+
+let component: CreateUserComponent;
+let fixture: ComponentFixture<CreateUserComponent>;
 
 describe('CreateUserComponent', () => {
-  let component: CreateUserComponent;
-  let fixture: ComponentFixture<CreateUserComponent>;
-
+  let usSpy: UserServiceSpy;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CreateUserComponent],
-      providers: [FormBuilder],
+      providers: [
+        FormBuilder,
+        { provide: UserService, useClass: UserServiceSpy },
+      ],
     }).compileComponents();
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CreateUserComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  beforeEach(async(() => {
+    createComponent();
+    usSpy = fixture.debugElement.injector.get(UserService) as any;
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -60,18 +66,30 @@ describe('CreateUserComponent', () => {
     expect(addressInput.textContent).toBe('');
     expect(emailInput.textContent).toBe('');
   });
-
-  // it('should disabled submit button if email input is invalid', () => {
-  //   const hostElement = fixture.nativeElement;
-  //   const emailInput: HTMLInputElement = hostElement.querySelector(
-  //     '#exampleInputEmail1'
-  //   );
-  //   emailInput.value = 'invalid-emil';
-  //   emailInput.dispatchEvent(new Event('input'));
-  //   const submitButton: HTMLButtonElement = hostElement.querySelector(
-  //     '#createUserButton'
-  //   );
-  //   fixture.detectChanges();
-  //   expect(submitButton.disabled).toEqual(true);
-  // });
 });
+
+export function asyncData<T>(data: T) {
+  return defer(() => Promise.resolve(data));
+}
+
+class UserServiceSpy {
+  testUser: User = { id: '1', name: 'Luna', lastName: 'Brillante' };
+
+  createUser = jasmine
+    .createSpy('createUser')
+    .and.callFake((user: User) =>
+      asyncData(Object.assign(this.testUser, { data: user }))
+    );
+}
+
+function createComponent() {
+  fixture = TestBed.createComponent(CreateUserComponent);
+  component = fixture.componentInstance;
+
+  // 1st change detection triggers ngOnInit which gets users
+  fixture.detectChanges();
+  return fixture.whenStable().then(() => {
+    // 2nd change detection
+    fixture.detectChanges();
+  });
+}
